@@ -2,34 +2,32 @@ const request = require("request");
 const server = require("../../src/server");
 const base = "http://localhost:3000";
 
-const routeMarco = `${base}/marco`;
+const routeAbout = `${base}/about`;
 
 describe("routes : static", () => {
 
    describe("GET /", () => {
 
-      it("should return status code 200 and have 'Welcome to Bloccit' in the body of the response", () => {
+      it("should return status code 200 and have 'Welcome to Bloccit' in the body of the response", (done) => {
 
          request.get(base, (err, res, body) => {
             expect(res.statusCode).toBe(200);
             expect(body).toContain("Welcome to Bloccit");
-            //done();
+            done();
          });
       });
    });
 
 
-   describe("GET /marco", () => {
+   describe("GET /about", () => {
 
-      it("should return status code 200 along with the body: 'polo' ", (done) => {
+      it("should return status code 200", (done) => {
 
-         request.get(routeMarco, (err, res, body) => {
+         request.get(routeAbout, (err, res, body) => {
             expect(res.statusCode).toBe(200);
-            expect(res.body).toContain('polo');
             done();
-         })
-      })
-
+         });
+      });
    });
 
 });
