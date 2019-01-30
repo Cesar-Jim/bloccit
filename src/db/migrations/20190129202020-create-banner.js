@@ -1,3 +1,7 @@
+// Running a migration CREATES a table in the database
+// UP will add changes to the database while DOWN will revet them
+// topicId specifies which key to use and what to call the association
+// In the references property, we are setting the model property as the table name
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {

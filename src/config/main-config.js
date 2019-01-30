@@ -1,3 +1,5 @@
+// This file is used to configure all middleware used in the application
+
 require("dotenv").config();
 
 const path = require("path");
@@ -6,9 +8,12 @@ const bodyParser = require("body-parser");
 
 module.exports = {
    init(app, express) {
-      app.set("views", viewsFolder);
-      app.set("view engine", "ejs");
+      app.set("views", viewsFolder); // Including path so that the app knows where to find the assets
+      app.set("view engine", "ejs"); // Setting the path where the templating engine will find the views
       app.use(bodyParser.urlencoded({ extended: true }))
-      app.use(express.static(path.join(__dirname, "..", "assets")));
+      // We tell bodyParser what to parse by using the required method. As we are parsing urlencoded,
+      // we'd like to be able to send rich objects, so we set the extended option to true.
+
+      app.use(express.static(path.join(__dirname, "..", "assets"))); // Mounting the view engine and telling Express where to find the static assets
    }
 };

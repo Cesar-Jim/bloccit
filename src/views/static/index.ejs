@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+   <!-- Using an ejs tag. Anything between "<%= %>"" is evaluated and RETURNED to the document. Note the "=" symbol -->
+   <!-- If we had moved the head tag into the partial, we could be limited to the tags used in the partial -->
    <% include ./partials/head.ejs %>
 </head>
 
@@ -44,6 +46,7 @@
    <!-- /.container -->
 
    <% include ./partials/baseScripts.ejs %>
+   <!-- Using "<% %>" evaluates the code between the EJS tag but DOES NOT return it (since we don't want it printed) -->
 
 </body>
 

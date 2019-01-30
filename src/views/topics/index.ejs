@@ -12,13 +12,17 @@
       <h1>Topics</h1>
 
       <ul class="list-group">
-         <!-- #1 -->
+         <!-- In this template we have access to topics which would be a variable containing all topics. -->
+         <!-- We loop over the topics and for each topic, display it. -->
+         <!-- EJS tags allow us to evaluate JavaScript where needed -->
          <% topics.forEach((topic) => { %>
-         <!-- #2 -->
+         <!-- For each topic, we are generating an HTML tag with an href attribute pointing to a route -->
+         <!-- we have yet to define. We can use EJS tags inside of strings and they will evaluate as expected -->
          <li class="list-group-item">
             <a href="/topics/<%= topic.id %>">
                <%= topic.title %> </a>
          </li>
+         <!-- the closing } and ) are still needed and evaluated inside EJS tags -->
          <% }) %>
       </ul>
 

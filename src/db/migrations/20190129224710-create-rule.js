@@ -1,3 +1,5 @@
+// Running a migration CREATES a table in the database
+// UP will add changes to the database while DOWN will revet them
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
