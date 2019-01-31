@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <% include ../static/partials/head.ejs %>
+</head>
+
+<body>
+   <% include ../static/partials/navbar.ejs %>
+
+   <main class="container">
+      <h1>
+         <%= advertisement.title %>
+         <a href="/advertisements/<%= advertisement.id %>/edit" class="btn btn-warning">Edit</a>
+
+         <!-- HTTP forms do not send DELETE requests, so we can use POST instead -->
+         <form style="display:initial" action="/advertisements/<%= advertisement.id %>/destroy" method="post">
+            <button type="submit" class="btn btn-danger">Delete</button>
+         </form>
+      </h1>
+
+      <p>
+         <%= advertisement.description %>
+      </p>
+   </main>
+
+   <% include ../static/partials/baseScripts.ejs %>
+
+</body>
+
+</html>
