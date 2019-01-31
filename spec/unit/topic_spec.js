@@ -73,7 +73,7 @@ describe("Topic", () => {
       it("should return and array of associated posts", (done) => {
          this.topic.getPosts()
             .then((collectionOfPosts) => {
-               expect(collectionOfPosts[0].topicId).toBe(this.topicId);
+               expect(collectionOfPosts[0].topicId).toBe(this.topic.id);
                done();
             });
       });

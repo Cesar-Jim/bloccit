@@ -22,6 +22,20 @@
       <p>
          <%= topic.description %>
       </p>
+      <hr>
+
+      <h1>Posts</h1>
+
+      <ul class="list-group">
+         <% topic.posts.foreach((post) => { %>
+         <li class="list-group-item">
+            <a href="/topics/<%= topic.id %>/posts/<%= post.id %>">
+               <%= post.title %></a>
+         </li>
+         <% }) %>
+      </ul>
+
+
    </main>
 
    <% include ../static/partials/baseScripts.ejs %>

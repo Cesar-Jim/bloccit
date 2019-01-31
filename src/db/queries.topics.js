@@ -3,6 +3,7 @@
 // (Create, Read, Update, and Delete). 
 // This is a promise-based module that abstracts the above mentioned actions
 const Topic = require("./models").Topic;
+const Post = require("/models").Post;
 
 module.exports = {
 
@@ -40,7 +41,17 @@ module.exports = {
    },
 
    getTopic(id, callback) {
-      return Topic.findById(id)
+      // Calling findById queries the topics table for the topic with a matching id and uses 
+      // the include option to eager load all associated posts.
+      return Topic.findById(id, {
+
+         // tell include what model to use and what to call the property we want to attach the 
+         // resulting posts as when the topic is returned. 
+         include: [{
+            model: Post,
+            as: "posts"
+         }]
+      })
          .then((topic) => {
             callback(null, topic);
          })
