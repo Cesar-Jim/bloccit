@@ -1,0 +1,17 @@
+const express = require("express");
+const router = express.Router();
+
+const advertisementController = require("../controllers/advertisementController");
+
+// GETs:
+router.get("/advertisements", advertisementController.index);
+router.get("/advertisements/new", advertisementController.new);
+router.get("/advertisements/:id", advertisementController.show);
+router.get("/advertisements/:id/edit", advertisementController.edit);
+
+// POSTs:
+router.post("/advertisements/create", advertisementController.create);
+router.post("/advertisements/:id/destroy", advertisementController.destroy);
+router.post("/advertisements/:id/update", advertisementController.update);
+
+module.exports = router;
