@@ -3,7 +3,7 @@
 // (Create, Read, Update, and Delete). 
 // This is a promise-based module that abstracts the above mentioned actions
 const Topic = require("./models").Topic;
-const Post = require("/models").Post;
+const Post = require("./models").Post;
 
 module.exports = {
 
