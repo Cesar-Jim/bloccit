@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 const faker = require("faker");
 
 // Define an array called topics and populate it with fifteen objects.
-// These plain JavaScript objects have keys for the attributes we want 
+// These plain JavaScript objects have keys for the attributes we want
 // each Topic object to have except for id which will be assigned on topic creation.
 let topics = [];
 
-for (let i = 1; i <= 15; i++) {
+for (let i = 1; i <= 5; i++) {
   topics.push({
     title: faker.hacker.noun(),
     description: faker.hacker.phrase(),

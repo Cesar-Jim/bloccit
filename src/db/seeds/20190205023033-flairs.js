@@ -1,17 +1,21 @@
 "use strict";
-
 const faker = require("faker");
-let advertisements = [];
+
+// Define an array called topics and populate it with fifteen objects.
+// These plain JavaScript objects have keys for the attributes we want
+// each Topic object to have except for id which will be assigned on topic creation.
+let flairs = [];
 
 for (let i = 1; i <= 5; i++) {
-  advertisements.push({
-    title: faker.commerce.productName(),
-    description: faker.random.words(),
+  flairs.push({
+    name: faker.hacker.noun(),
+    color: faker.commerce.color(),
     createdAt: new Date(),
     updatedAt: new Date()
   });
 }
 
+// Like migrations, the up method does something, and the down method reverts it.
 module.exports = {
   up: (queryInterface, Sequelize) => {
     /*
@@ -24,7 +28,7 @@ module.exports = {
         isBetaMember: false
       }], {});
     */
-    return queryInterface.bulkInsert("Advertisements", advertisements, {});
+    return queryInterface.bulkInsert("Flairs", flairs, {});
   },
 
   down: (queryInterface, Sequelize) => {
@@ -35,6 +39,6 @@ module.exports = {
       Example:
       return queryInterface.bulkDelete('People', null, {});
     */
-    return queryInterface.bulkDelete("Advertisements", null, {});
+    return queryInterface.bulkDelete("Flairs", null, {});
   }
 };
