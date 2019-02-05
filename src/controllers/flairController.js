@@ -12,6 +12,7 @@ module.exports = {
     };
     flairQueries.addFlair(newFlair, (err, flair) => {
       if (err) {
+        console.log(err);
         res.redirect(500, "/flairs/new");
       } else {
         res.redirect(303, `/topics/${newFlair.topicId}/flairs/${flair.id}`);

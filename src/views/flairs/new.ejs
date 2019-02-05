@@ -11,23 +11,24 @@
       <!-- Form for submitting a new flair -->
       <form action="/topics/<%= topicId %>/flairs/create" method="post">
         <div class="form-group">
-          <label for="title">Flair title</label>
+          <label for="name">Flair Name</label>
           <input
             type="text"
             class="form-control"
-            name="title"
-            aria-describedby="titleHelp"
-            placeholder="Enter Title"
+            name="name"
+            aria-describedby="nameHelp"
+            placeholder="Enter Name"
           />
         </div>
         <div class="form-group">
-          <label for="body">Color</label>
-          <textarea
-            rows="4"
+          <label for="color">Flair Color</label>
+          <input
+            type="text"
             class="form-control"
-            name="body"
+            name="color"
+            aria-describedby="colorHelp"
             placeholder="Enter Color"
-          ></textarea>
+          />
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
