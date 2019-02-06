@@ -1,17 +1,25 @@
-<% if(messages.error) { %>
-
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
+<!-- check to see if either an error or notice property is present, 
+  and use this to determine what class to use for the alert. -->
+<% if(messages.error || messages.notice) { %>
+<div class="alert alert-<%= messages.eeror ? 'danger' : 'warning' %> alert-dismissible fade show" role="alert">
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
+  <!-- If error, use the loop we utilized before. -->
+  <% if(messages.error) { %>
   Validation errors:
   <ul>
-
     <% messages.error.forEach((err) => { %>
     <li>
       <%= `${err.param} ${err.msg}` %>
     </li>
     <% }) %>
   </ul>
+  <!-- If notice, evaluate it since it is just a string. -->
+  <% } else { %>
+  <p>
+    <%= messages.notice %>
+  </p>
+  <% } %>
 </div>
 <% } %>
