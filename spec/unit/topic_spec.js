@@ -1,41 +1,59 @@
 const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
 const Post = require("../../src/db/models").Post;
+const User = require("../../src/db/models").User;
 
 describe("Topic", () => {
 
    beforeEach((done) => {
       this.topic;
       this.post;
+      this.user;
+
       sequelize.sync({ force: true }).then((res) => {
-         // create a topic:
-         Topic.create({
-            title: "This is a new topic",
-            description: "Just trying to conduct a test."
+
+         // Create a User object
+         User.create({
+            email: "starman@tesla.com",
+            password: "Trekkie4lyfe"
          })
-            .then((topic) => {
-               this.topic = topic;
-               // create a post:
-               Post.create({
-                  title: "This is a new post",
-                  body: "A topic can have several posts.",
-                  // Associate the topic and the post by setting the topicId attribute on the post object.
-                  topicId: this.topicId
-               })
-                  .then((post) => {
-                     this.post = post;
+            .then((user) => {
+               this.user = user; //store the user
+
+               // Create a Topic object
+               Topic.create({
+                  title: "Expeditions to Alpha Centauri",
+                  description: "A compilation of reports from recent visits to the star system.",
+
+                  // Use nested create to create objects and associations in a single call. For each object in posts, 
+                  // Sequelize will create a Post object with the attribute values provided. The result will be a Topic 
+                  // object with associated Post objects.
+                  posts: [{
+                     title: "My first visit to Proxima Centauri b",
+                     body: "I saw some rocks.",
+                     userId: this.user.id
+                  }]
+               }, {
+
+                     // The include property allows us to tell the method what model to use as well as where to store the 
+                     // resulting posts as in the Topic object.  [Topic instance name].posts will return an array of Post 
+                     // objects associated with the  Topic object.
+                     include: {
+                        model: Post,
+                        as: "posts"
+                     }
+                  })
+                  .then((topic) => {
+                     this.topic = topic; //store the topic
+                     this.post = topic.posts[0]; //store the post
                      done();
-                  });
+                  })
             })
-            .catch((err) => {
-               console.log(err);
-               done();
-            });
       });
    });
 
    describe("#create()", () => {
-      it("should create a topic object with a title, and a body", (done) => {
+      it("should create a topic object with a title, and description", (done) => {
 
          Topic.create({
             title: "This is a new topic",
@@ -60,7 +78,6 @@ describe("Topic", () => {
                done();
             })
             .catch((err) => {
-               expect(err.message).toContain("Topic.title cannot be null");
                expect(err.message).toContain("Topic.description cannot be null");
                done();
             });

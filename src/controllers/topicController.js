@@ -1,5 +1,6 @@
 // This module creates the controller and configures the route for GET /topics.
 const topicQueries = require("../db/queries.topics.js");
+const Authorizer = require("../policies/topic.js");
 
 module.exports = {
    index(req, res, next) {
@@ -19,28 +20,41 @@ module.exports = {
 
    // Configure the action to render the template that will contain the form to create a new topic
    new(req, res, next) {
-      res.render("topics/new");
+      const authorized = new Authorizer(req.user).new();
+
+      if (authorized) {
+         res.render("topics/new");
+      } else {
+         req.flash("notice", "You are not authorized to do that.");
+         res.redirect("/topics");
+      }
    },
 
    // The create action grabs the values from the body property of the request and assigns them to a JavaScript object.
    create(req, res, next) {
-      let newtopic = {
-         title: req.body.title,
-         description: req.body.description
-      };
 
-      // Call the addTopic method to pass the object as an argument
-      topicQueries.addTopic(newtopic, (err, topic) => {
+      // Pass the user to the policy constructor and call create on the policy instance.
+      const authorized = new Authorizer(req.user).create();
 
-         // If there is an error, we send error and redirect back to the new view
-         if (err) {
-            res.redirect(500, "/topics/new");
+      // If authorized evaluates to true, continue with Topic object creation.
+      if (authorized) {
+         let newTopic = {
+            title: req.body.title,
+            description: req.body.description
+         };
+         topicQueries.addTopic(newTopic, (err, topic) => {
+            if (err) {
+               res.redirect(500, "/topics/new");
+            } else {
+               res.redirect(303, `/topics/${topic.id}`);
+            }
+         });
+      } else {
+         // If the user is not authorized, flash an error and redirect.
+         req.flash("notice", "You are not authorized to do that.");
+         req.redirect("/topics");
+      }
 
-            // Otherwise we send a success code and redirect to the show view for the new topic 
-         } else {
-            res.redirect(303, `/topics/${topic.id}`);
-         }
-      });
    },
 
    show(req, res, next) {
@@ -65,12 +79,12 @@ module.exports = {
 
    // We call deleteTopic and pass in the URL parameter for the topic ID.
    destroy(req, res, next) {
+      // Pass the request object to the deleteTopic method.
       topicQueries.deleteTopic(req.params.id, (err, topic) => {
 
          // On error, we return a server error and redirect to the show view. On success, we redirect to the /topics path.
          if (err) {
-            res.redirect(500, `/topics/${topic.id}`)
-
+            res.redirect(err, `/topics/${req.params.id}`)
          } else {
             res.redirect(303, "/topics")
          }
@@ -79,6 +93,7 @@ module.exports = {
 
    // We use the getTopic method to get the topic with the matching ID passed in the request.
    edit(req, res, next) {
+      // Query for the topic with the matching ID from the URL parameters.
       topicQueries.getTopic(req.params.id, (err, topic) => {
 
          // If there is an error present or there is no topic returned, we redirect to the landing 
@@ -87,25 +102,35 @@ module.exports = {
             res.redirect(404, "/");
 
          } else {
-            res.render("topics/edit", { topic });
+
+            // If we find the topic we pass it to the policy constructor along with the signed in user. 
+            // Then we call the edit method of the policy class to determine if the user is authorized.
+            const authorized = new Authorizer(req.user, topic).edit();
+
+            // If the user is authorized, render the edit view. If not, flash an error and redirect.
+            if (authorized) {
+               res.render("topics/edit", { topic });
+            } else {
+               req.flash("You are not authorized to do that.")
+               res.redirect(`/topics/${req.params.id}`)
+            }
          }
       });
    },
+
 
    update(req, res, next) {
 
       // We call updateTopic and pass in the ID from the URL parameters as well as the body of the 
       // request which contains the key-value pairs for the fields we want to update.
-      topicQueries.updateTopic(req.params.id, req.body, (err, topic) => {
+      topicQueries.updateTopic(req, req.body, (err, topic) => {
 
          // If we don't find a topic, we return a 404 and redirect to the edit view. Otherwise, we 
          // redirect to the updated show view with the newly updated topic. 
          if (err || topic == null) {
-            res.redirect(404, `/topics/${req.params.id}/edit`);
-
+            res.redirect(401, `/topics/${req.params.id}/edit`);
          } else {
-            res.redirect(`/topics/${topic.id}`);
-
+            res.redirect(`/topics/${req.params.id}`);
          }
       });
    }
