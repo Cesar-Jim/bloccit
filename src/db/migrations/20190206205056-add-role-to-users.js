@@ -8,8 +8,6 @@ module.exports = {
       {
         type: Sequelize.STRING,
         allowNull: false,
-
-        // Set a default value for the role property if not provided at creation.
         defaultValue: "member"
       }
     );

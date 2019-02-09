@@ -1,12 +1,7 @@
-// We require ApplicationPolicy so that we can extend it. When class A extends class B, 
-// class A inherits all the methods and attributes that class B has.
 const ApplicationPolicy = require("./application");
 
 module.exports = class TopicPolicy extends ApplicationPolicy {
 
-  // Provide our definition of the new method because using the one defined in the interface 
-  // of the parent would not work for this resource. We only want admin users to create new topics. 
-  // The create method delegates to the new method.
   new() {
     return this._isAdmin();
   }
@@ -15,7 +10,6 @@ module.exports = class TopicPolicy extends ApplicationPolicy {
     return this.new();
   }
 
-  // Only admins can edit topics, so the edit method checks that the user is an admin user.
   edit() {
     return this._isAdmin();
   }

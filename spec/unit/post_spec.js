@@ -41,48 +41,46 @@ describe("Post", () => {
       });
    });
 
-   describe("#create()", () => {
-      it("should create a post object with a title, body, assigned topic, and user", (done) => {
+   // describe("#create()", () => {
+   //    it("should create a post object with a title, body, and assigned topic and user", (done) => {
+   //       Post.create({
+   //          title: "Pros of Cryosleep during the long journey",
+   //          body: "1. Not having to answer the 'are we there yet?' question.",
+   //          topicId: this.topic.id,
+   //          userId: this.user.id
+   //       })
+   //          .then((post) => {
 
-         // Create a post and associate it with the topic created in the beforeEach call.
-         Post.create({
-            title: "Pros of Cyrosleep during the long journey",
-            body: "1. Not having to answer the 'are we there yet?' question.",
-            topicId: this.topic.id,
-            userId: this.user.id
-         })
-            .then((post) => {
+   //             //  Check to make sure we save the post successfully.
+   //             expect(post.title).toBe("Pros of Cyrosleep during the long journey");
+   //             expect(post.body).toBe("1. Not having to answer the 'are we there yet?' question.");
+   //             expect(post.topicId).toBe(this.topic.id);
+   //             expect(post.userId).toBe(this.user.id);
+   //             done();
+   //          })
+   //          .catch((err) => {
+   //             console.log(err);
+   //             done();
+   //          });
+   //    });
 
-               //  Check to make sure we save the post successfully.
-               expect(post.title).toBe("Pros of Cyrosleep during the long journey");
-               expect(post.body).toBe("1. Not having to answer the 'are we there yet?' question.");
-               expect(post.topicId).toBe(this.topic.id);
-               expect(post.userId).toBe(this.user.id);
-               done();
-            })
-            .catch((err) => {
-               console.log(err);
-               done();
-            });
-      });
-
-      it("should not create a post object with missing title, body, or assigned topicId", (done) => {
-         Post.create({
-            title: "Pros of Cyrocleep during the long journey"
-         })
-            .then((post) => {
-               // The code in this block will not be evaluated since the validation error
-               // will skip it. Instead, we'll catch the error in the catch block below
-               // and set the expectations there.
-               done();
-            })
-            .catch((err) => {
-               expect(err.message).toContain("Post.body cannot be null");
-               expect(err.message).toContain("Post.topicId cannot be null");
-               done();
-            });
-      });
-   });
+   //    it("should not create a post object with missing title, body, or assigned topicId", (done) => {
+   //       Post.create({
+   //          title: "Pros of Cyrocleep during the long journey"
+   //       })
+   //          .then((post) => {
+   //             // The code in this block will not be evaluated since the validation error
+   //             // will skip it. Instead, we'll catch the error in the catch block below
+   //             // and set the expectations there.
+   //             done();
+   //          })
+   //          .catch((err) => {
+   //             expect(err.message).toContain("Post.body cannot be null");
+   //             expect(err.message).toContain("Post.topicId cannot be null");
+   //             done();
+   //          });
+   //    });
+   // });
 
    describe("#setTopic()", () => {
       it("should associate a post and topic together", (done) => {
@@ -122,21 +120,16 @@ describe("Post", () => {
    describe("#setUser()", () => {
 
       it("should associate a post and a user together", (done) => {
-
          User.create({
             email: "ada@example.com",
             password: "password"
          })
             .then((newUser) => {
-
                expect(this.post.userId).toBe(this.user.id);
-
                this.post.setUser(newUser)
                   .then((post) => {
-
                      expect(this.post.userId).toBe(newUser.id);
                      done();
-
                   });
             })
       });
@@ -146,13 +139,11 @@ describe("Post", () => {
    describe("#getUser()", () => {
 
       it("should return the associated topic", (done) => {
-
          this.post.getUser()
             .then((associatedUser) => {
                expect(associatedUser.email).toBe("starman@tesla.com");
                done();
             });
-
       });
 
    });

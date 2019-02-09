@@ -7,15 +7,16 @@ const Topic = require("../../src/db/models").Topic;
 const User = require("../../src/db/models").User;
 
 describe("routes : topics", () => {
+
    beforeEach((done) => {
       this.topic;
-      sequelize.sync({ force: true }).then((res) => {
-         Topic.create({
+      sequelize.sync({ force: true }).then((res) => { // Clear the DB
+         Topic.create({ // Add a record to the topics table
             title: "JS Frameworks",
             description: "There is a lot of them"
          })
             .then((topic) => {
-               this.topic = topic;
+               this.topic = topic; // We bind "topic" to the test context so we can use it later
                done();
             })
             .catch((err) => {
@@ -26,6 +27,7 @@ describe("routes : topics", () => {
    });
 
    describe("admin user performing CRUD actions for Topic", () => {
+
       beforeEach((done) => {
          User.create({
             email: "admin@example.com",
@@ -33,16 +35,18 @@ describe("routes : topics", () => {
             role: "admin"
          })
             .then((user) => {
-               request.get({
+               request.get({ // mock authentication
                   url: "http://localhost:3000/auth/fake",
                   form: {
-                     role: user.role,
+                     role: user.role, // mock authenticate as admin user
                      userId: user.id,
                      email: user.email
                   }
-               }, (err, res, body) => {
-                  done();
-               });
+               },
+                  (err, res, body) => {
+                     done();
+                  }
+               );
             });
       });
 
@@ -184,9 +188,11 @@ describe("routes : topics", () => {
             form: {
                role: "member"
             }
-         }, (err, res, body) => {
-            done();
-         });
+         },
+            (err, res, body) => {
+               done();
+            }
+         );
       });
 
       describe("GET /topics", () => {

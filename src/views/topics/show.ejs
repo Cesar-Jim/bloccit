@@ -13,9 +13,6 @@
       <%= topic.title %>
     </h1>
 
-    <p>
-      <%= topic.description %>
-    </p>
     <% if(currentUser) { %>
     <a href="/topics/<%= topic.id %>/posts/new" class="btn btn-success">New Post</a>
     <% if(currentUser.isAdmin()) { %>
@@ -25,6 +22,12 @@
     </form>
     <% } %>
     <% } %>
+
+    <p>
+      <%= topic.description %>
+    </p>
+
+
     <a href="/topics/<%= topic.id %>/flairs/new" class="btn btn-success">New Flair</a>
     <hr />
     <h4>Flairs</h4>
