@@ -12,10 +12,16 @@
     <h1>Name:
       <%= flair.name %>
     </h1>
-    <a href="/topics/<%= flair.topicId %>/flairs/<%= flair.id %>/edit" class="btn btn-warning">Edit</a>
+    <h1>Color:
+      <%= flair.color %>
+    </h1>
+
+    <% if (currentUser) { %>
     <form style="display:initial" action="/topics/<%= flair.topicId %>/flairs/<%= flair.id %>/destroy" method="post">
+      <a href="/topics/<%= flair.topicId %>/flairs/<%= flair.id %>/edit" class="btn btn-warning">Edit</a>
       <button type="submit" class="btn btn-danger">Delete</button>
     </form>
+    <% } %>
   </main>
 
   <% include ../static/partials/baseScripts.ejs %>
