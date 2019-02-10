@@ -27,6 +27,23 @@
       <p>
          <%= post.body %>
       </p>
+
+      <!-- Only show the comments form if there is a signed in user -->
+      <% if(currentUser) { %>
+      <% include ../comments/new.ejs %>
+      <% } %>
+
+      <!-- list the comments associated with this post -->
+      <section id="comments-list">
+         <% if(post.comments) { %>
+         <% post.comments.forEach((comment) => { %>
+
+         <!-- For each comment, we render a partial containing the markup needed to render each comment -->
+         <%- include("../comments/show.ejs", {comment}) %>
+         <% }) %>
+         <% } %>
+
+      </section>
    </main>
 
    <% include ../static/partials/baseScripts.ejs %>

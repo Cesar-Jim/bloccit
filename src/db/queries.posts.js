@@ -1,6 +1,8 @@
 const Topic = require("./models").Topic;
 const Post = require("./models").Post;
 const Authorizer = require("../policies/application");
+const Comment = require("./models").Comment;
+const User = require("./models").User;
 
 module.exports = {
    addPost(newPost, callback) {
@@ -14,7 +16,17 @@ module.exports = {
    },
 
    getPost(id, callback) {
-      return Post.findById(id)
+      return Post.findById(id, {
+         // By passing the include property, we are telling it to include all objects in the table 
+         // associated with the model Comment and set them as a value to the property comments.
+         include: [
+            {
+               model: Comment, as: "comments", include: [
+                  { model: User }
+               ]
+            }
+         ]
+      })
          .then((post) => {
             callback(null, post);
          })
