@@ -64,7 +64,7 @@ describe("Vote", () => {
     });
   });
 
-  //suits will begin here
+  //suites will begin here
   // Define a suite for the create action
   describe("#create()", () => {
 
@@ -108,6 +108,22 @@ describe("Vote", () => {
         })
         .catch((err) => {
           console.log(err);
+          done();
+        });
+    });
+
+    it("should NOT create a vote on a post when the value is not 1 or -1", (done) => {
+      Vote.create({
+        value: 0,
+        postId: this.post.id,
+        userId: this.user.id
+      })
+        .then((vote) => {
+          done();
+
+        })
+        .catch((err) => {
+          expect(err.message).toContain("Validation error")
           done();
         });
     });
@@ -260,6 +276,64 @@ describe("Vote", () => {
         });
     });
 
+  });
+
+
+  describe("#hasUpvoteFor()", () => {
+    it("should return true if the user has an upvote for the post", (done) => {
+
+      Post.create({         // create a new post
+        title: "Dress code on Proxima b",
+        body: "Spacesuit, space helmet, space boots, and space gloves",
+        topicId: this.topic.id,
+        userId: this.user.id,
+        votes: [{ value: 1, userId: this.user.id }]
+      }, {
+          include: {
+            model: Vote,
+            as: "votes"
+          }
+        })
+        .then((post) => {
+          this.post = post;
+
+          expect(post.hasUpvoteFor(this.user.id)).toContain(true);
+          done();
+        })
+        .catch((err) => {
+          console.log(err);
+          done();
+        });
+    });
+  });
+
+
+  describe("#hasDownvoteFor()", () => {
+    it("should return true if the user has a downvote for the post", (done) => {
+
+      Post.create({         // create a new post
+        title: "Dress code on Proxima b",
+        body: "Spacesuit, space helmet, space boots, and space gloves",
+        topicId: this.topic.id,
+        userId: this.user.id,
+        votes: [{ value: -1, userId: this.user.id }]
+      }, {
+          include: {
+            model: Vote,
+            as: "votes"
+          }
+        })
+        .then((post) => {
+          this.post = post;
+
+          expect(post.hasDownvoteFor(this.user.id)).toContain(true);
+          done();
+        })
+        .catch((err) => {
+          console.log(err);
+          done();
+        });
+    });
   });
 
 });

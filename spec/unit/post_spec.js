@@ -2,6 +2,7 @@ const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
 const Post = require("../../src/db/models").Post;
 const User = require("../../src/db/models").User;
+const Vote = require("../../src/db/models").Vote;
 
 describe("Post", () => {
    beforeEach((done) => {
@@ -41,46 +42,46 @@ describe("Post", () => {
       });
    });
 
-   // describe("#create()", () => {
-   //    it("should create a post object with a title, body, and assigned topic and user", (done) => {
-   //       Post.create({
-   //          title: "Pros of Cryosleep during the long journey",
-   //          body: "1. Not having to answer the 'are we there yet?' question.",
-   //          topicId: this.topic.id,
-   //          userId: this.user.id
-   //       })
-   //          .then((post) => {
+   describe("#create()", () => {
+      it("should create a post object with a title, body, and assigned topic and user", (done) => {
+         Post.create({
+            title: "Pros of Cryosleep during the long journey",
+            body: "1. Not having to answer the 'are we there yet?' question.",
+            topicId: this.topic.id,
+            userId: this.user.id
+         })
+            .then((post) => {
 
-   //             //  Check to make sure we save the post successfully.
-   //             expect(post.title).toBe("Pros of Cyrosleep during the long journey");
-   //             expect(post.body).toBe("1. Not having to answer the 'are we there yet?' question.");
-   //             expect(post.topicId).toBe(this.topic.id);
-   //             expect(post.userId).toBe(this.user.id);
-   //             done();
-   //          })
-   //          .catch((err) => {
-   //             console.log(err);
-   //             done();
-   //          });
-   //    });
+               //  Check to make sure we save the post successfully.
+               expect(post.title).toBe("Pros of Cryosleep during the long journey");
+               expect(post.body).toBe("1. Not having to answer the 'are we there yet?' question.");
+               expect(post.topicId).toBe(this.topic.id);
+               expect(post.userId).toBe(this.user.id);
+               done();
+            })
+            .catch((err) => {
+               console.log(err);
+               done();
+            });
+      });
 
-   //    it("should not create a post object with missing title, body, or assigned topicId", (done) => {
-   //       Post.create({
-   //          title: "Pros of Cyrocleep during the long journey"
-   //       })
-   //          .then((post) => {
-   //             // The code in this block will not be evaluated since the validation error
-   //             // will skip it. Instead, we'll catch the error in the catch block below
-   //             // and set the expectations there.
-   //             done();
-   //          })
-   //          .catch((err) => {
-   //             expect(err.message).toContain("Post.body cannot be null");
-   //             expect(err.message).toContain("Post.topicId cannot be null");
-   //             done();
-   //          });
-   //    });
-   // });
+      it("should not create a post object with missing title, body, or assigned topicId", (done) => {
+         Post.create({
+            title: "Pros of Cyrocleep during the long journey"
+         })
+            .then((post) => {
+               // The code in this block will not be evaluated since the validation error
+               // will skip it. Instead, we'll catch the error in the catch block below
+               // and set the expectations there.
+               done();
+            })
+            .catch((err) => {
+               expect(err.message).toContain("Post.body cannot be null");
+               expect(err.message).toContain("Post.topicId cannot be null");
+               done();
+            });
+      });
+   });
 
    describe("#setTopic()", () => {
       it("should associate a post and topic together", (done) => {
@@ -144,6 +145,32 @@ describe("Post", () => {
                expect(associatedUser.email).toBe("starman@tesla.com");
                done();
             });
+      });
+
+   });
+
+   describe("#getPoints()", () => {
+      it("should return the number of votes for a given post", (done) => {
+         Post.create({
+            title: "Dress code on Proxima b",
+            body: "Spacesuit, space helmet, space boots, and space gloves",
+            topicId: this.topic.id,
+            userId: this.user.id,
+            votes: [{ value: 1, userId: this.user.id }]
+         }, {
+               include: {
+                  model: Vote,
+                  as: "votes"
+               }
+            })
+            .then((post) => {
+               expect(post.getPoints()).toBe(1);
+               done();
+            })
+            .catch((err) => {
+               console.log(err);
+               done();
+            })
       });
 
    });
