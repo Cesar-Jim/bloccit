@@ -12,6 +12,15 @@
 
       <% include ../static/partials/messages.ejs %>
 
+      <div style="display: flex; align-items:center;">
+         <% if(currentUser) { %>
+         <% include ../votes/voting.ejs %>
+         <% } %>
+         <h1>
+            <%= post.title %>
+         </h1>
+      </div>
+
       <h1>
          <%= post.title %>
       </h1>

@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
   }, {});
+
   Post.associate = function (models) {
 
     Post.belongsTo(models.Topic, {
@@ -40,6 +41,25 @@ module.exports = (sequelize, DataTypes) => {
       as: "comments"
     });
 
+    Post.hasMany(models.Vote, {
+      foreignKey: "postId",
+      as: "votes"
+    });
+
+
   };
+
+  Post.prototype.getPoints = function () {
+
+    //check to see if the post has any votes. If not, return 0.
+    if (this.votes.length === 0) return 0
+
+    // If a post has votes, get a count of all values, add them and return the result. 
+    return this.votes
+      .map((v) => { return v.value })
+      .reduce((prev, next) => { return prev + next });
+
+  };
+
   return Post;
 };
