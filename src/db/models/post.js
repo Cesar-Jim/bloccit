@@ -1,4 +1,5 @@
 'use strict';
+
 module.exports = (sequelize, DataTypes) => {
   var Post = sequelize.define('Post', {
 
@@ -58,6 +59,14 @@ module.exports = (sequelize, DataTypes) => {
       });
     });
 
+    Post.afterCreate((post, callback) => {
+      debugger;
+      return models.Vote.create({
+        userId: post.userId,
+        postId: post.id,
+        value: 1
+      });
+    });
   };
 
   Post.prototype.getPoints = function () {
