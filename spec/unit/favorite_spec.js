@@ -95,20 +95,13 @@ describe("Favorite", () => {
         userId: null
       })
         .then((favorite) => {
-
-          // the code in this block will not be evaluated since the validation error
-          // will skip it. Instead, we'll catch the error in the catch block below
-          // and set the expectations there
-
           done();
-
         })
         .catch((err) => {
 
           expect(err.message).toContain("Favorite.userId cannot be null");
           expect(err.message).toContain("Favorite.postId cannot be null");
           done();
-
         })
     });
 

@@ -29,7 +29,7 @@
       <%= topic.description %>
     </p>
 
-    <% if(currentUser && currentUser.isAdmin()) { %>
+    <% if(currentUser && (currentUser.isAdmin() || currentUser.role === "member")) { %>
     <a href="/topics/<%= topic.id %>/flairs/new" class="btn btn-success">New Flair</a>
     <hr />
     <% } %>

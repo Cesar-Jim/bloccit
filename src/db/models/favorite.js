@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     }
   }, {});
+
   Favorite.associate = function (models) {
     // associations can be defined here
     Favorite.belongsTo(models.Post, {
@@ -22,5 +23,6 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: "CASCADE"
     });
   };
+
   return Favorite;
 };

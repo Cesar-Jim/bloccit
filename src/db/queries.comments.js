@@ -17,6 +17,7 @@ module.exports = {
       });
   },
 
+
   // Query the comments table for the right comment and pass it and the user to the policy instance.
   deleteComment(req, callback) {
     return Comment.findById(req.params.id)

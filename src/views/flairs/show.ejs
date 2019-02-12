@@ -16,7 +16,7 @@
       <%= flair.color %>
     </h1>
 
-    <% if (currentUser) { %>
+    <% if(currentUser) { %>
     <form style="display:initial" action="/topics/<%= flair.topicId %>/flairs/<%= flair.id %>/destroy" method="post">
       <a href="/topics/<%= flair.topicId %>/flairs/<%= flair.id %>/edit" class="btn btn-warning">Edit</a>
       <button type="submit" class="btn btn-danger">Delete</button>

@@ -19,8 +19,6 @@ module.exports = {
 
    getPost(id, callback) {
       return Post.findById(id, {
-         // By passing the include property, we are telling it to include all objects in the table 
-         // associated with the model Comment and set them as a value to the property comments.
          include: [
             {
                model: Comment, as: "comments", include: [

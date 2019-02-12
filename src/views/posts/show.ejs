@@ -16,46 +16,39 @@
          <% if(currentUser) { %>
          <% include ../votes/voting.ejs %>
          <% } %>
-         <h1>
-            <%= post.title %>
-         </h1>
+         <h1><%= post.title %></h1>
       </div>
 
-      <h1>
-         <%= post.title %>
-      </h1>
-      <% if(currentUser) { %>
+      <% if(currentUser && (currentUser.isAdmin() || currentUser.id === post.userId)) { %>
+      <a href="/topics/<%= post.topicId %>/posts/<%= post.id %>/edit" class="btn btn-warning">Edit</a>
       <form style="display:initial" action="/topics/<%= post.topicId %>/posts/<%= post.id %>/destroy" method="post">
-         <a href="/topics/<%= post.topicId %>/posts/<%= post.id %>/edit" class="btn btn-warning">Edit</a>
          <button type="submit" class="btn btn-danger">Delete</button>
          <br>
          <br>
       </form>
       <% } %>
 
+      <!-- Favorites: -->
       <% if(currentUser) { %>
       <% include ../favorites/favoriting.ejs %>
       <% } %>
 
-      <p>
-         <%= post.body %>
-      </p>
+      <p><%= post.body %></p>
 
-      <!-- Only show the comments form if there is a signed in user -->
-      <% if(currentUser) { %>
-      <% include ../comments/new.ejs %>
-      <% } %>
+      <section id="comment-form">
+         <% if(currentUser) { %>
+         <% include ../comments/new.ejs %>
+         <% } %>
+      </section>
 
-      <!-- list the comments associated with this post -->
-      <section id="comments-list">
+      <section id="comment-list">
          <% if(post.comments) { %>
          <% post.comments.forEach((comment) => { %>
 
-         <!-- For each comment, we render a partial containing the markup needed to render each comment -->
          <%- include("../comments/show.ejs", {comment}) %>
          <% }) %>
          <% } %>
-
+      </section>
       </section>
    </main>
 
