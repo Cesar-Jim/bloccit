@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const Comment = sequelize.define('Comment', {
+  var Comment = sequelize.define('Comment', {
 
     body: {
       type: DataTypes.STRING,
@@ -28,6 +28,19 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "userId",
       onDelete: "CASCADE"
     });
+
+    Comment.addScope("lastFiveFor", (userId) => {
+      return {
+        include: [{
+          model: models.Post
+        }],
+        where: { userId: userId },
+
+        limit: 5,
+        order: [["createdAt", "DESC"]]
+      }
+    });
+
   };
 
   return Comment;
