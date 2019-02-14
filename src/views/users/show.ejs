@@ -13,22 +13,20 @@
 
     <% include ../static/partials/messages.ejs %>
 
-    <!-- Evaluate the user's email. -->
+
     <h1><%= `${user.email}'s profile` %></h1>
 
     <hr>
 
-    <h2> Latest Posts</h2>
-
+    <h2> Latest Posts - Last 5</h2>
     <ul class="list-unstyled">
-
-      <!-- check if there are posts for the user. -->
       <% if(posts) { %>
+      <% let count = 0;%>
       <% posts.forEach((post) => { %>
-      <!-- If there are posts, build a <li> for each and link to the post's show view. -->
+      <% count += 1;%>
       <li>
         <a href="/topics/<%= post.topicId %>/posts/<%= post.id %>">
-          <%= post.title %>
+          <%= `${count}. ${post.title}` %>
         </a>
       </li>
       <% }) %>
@@ -36,25 +34,37 @@
     </ul>
     <hr>
 
-    <h2> Latest Comments</h2>
-
+    <h2> Latest Comments - Last 5</h2>
     <ul class="list-unstyled">
-
-      <!--  Check if there are comments for the user. -->
       <% if(comments) { %>
+      <% let count = 0;%>
       <% comments.forEach((comment) => { %>
-
-      <!-- If there are comments, we build a <li> for each and link to the comment's post. -->
       <li>
-        <span>Post: </span><a href="/topics/<%= comment.Post.topicId %>/posts/<%= comment.Post.id %>">
+        <span>Post:</span><a href="/topics/<%= comment.Post.topicId %>/posts/<%= comment.Post.id %>">
           <%= comment.Post.title %>
         </a>
-        <p>Comment: <%= comment.body %></p>
+        <p><%= count +1 %>. Comment: "<%= comment.body %>"</p>
       </li>
       <hr>
       <% }) %>
       <% } %>
     </ul>
+
+    <h2> Favorited Posts - Full List</h2>
+    <ul class="list-unstyled">
+      <% if(favorites) { %>
+      <% let count = 0;%>
+      <% favorites.forEach((favorite) => { %>
+      <% count += 1;%>
+      <li>
+        <a href="/topics/<%= favorite.Post.topicId %>/posts/<%= favorite.Post.id %>">
+          <%= `${count}. ${favorite.Post.title}` %>
+        </a>
+      </li>
+      <% }) %>
+      <% } %>
+    </ul>
+    <hr>
   </main>
 
   <% include ../static/partials/baseScripts.ejs %>
